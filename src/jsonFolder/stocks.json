@@ -1,0 +1,42 @@
+{
+    "allStocks":[
+        {
+            "symbol":"AMZN",
+            "name":"Amazone.com Inc"
+           
+        },
+        {
+            "symbol":"GS",
+            "name":"Goldman Sachs Group Inc"
+        },
+        {
+            "symbol":"HD",
+            "name":"Home Depot Inc"
+        },
+        {
+            "symbol":"INTC",
+            "name":" Intel Corporation"
+        },
+        {
+            "symbol": "BA",
+             "name": "The Boeing Company"
+        },
+        {
+            "symbol": "MSFT",
+             "name": "Microsoft Corporation"
+        },
+        {
+            "symbol": "DIS",
+             "name": "The Walt Disney Company"
+        },
+        {
+            "symbol": "MCD",
+             "name": "McDonald's Corporation"
+        }
+       
+       
+    
+    ]
+        
+   
+}

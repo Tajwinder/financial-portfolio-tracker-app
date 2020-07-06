@@ -1,0 +1,31 @@
+.AddStockModal{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+    /* opacity: 0.7; */
+}
+.ModalContent{
+    width: 60%;
+    height: 70%;
+    margin: 100px auto;
+    background-color: white;
+}
+.modalAttributes{
+    display: flex;
+    /* align-content: center; */
+    justify-content: space-between;
+
+}
+.ModalContent{
+    padding: 10px 50px;
+    text-align: center;
+}
+.content{
+    margin: 100px auto;
+}
+.inputBox{
+    width: 150px;
+}
