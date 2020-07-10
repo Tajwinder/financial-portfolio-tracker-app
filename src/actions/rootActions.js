@@ -24,9 +24,23 @@ export function addRequest(payload) {
         payload: payload
     };
 }
+
+export function addTickers(payload) {
+    return {
+        type: "ADD_TICKERS",
+        payload: payload
+    };
+}
 export function initStock(payload) {
     return {
         type: "INIT_STOCK",
+        payload: payload
+    };
+}
+
+export function initTickers(payload) {
+    return {
+        type: "INIT_TICKERS",
         payload: payload
     };
 }

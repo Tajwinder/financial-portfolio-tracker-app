@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './CustomModal.css';
 import axios from 'axios';
 import {connect} from 'react-redux';
-import {addRequest,hideModal} from './../../actions/rootActions';
+import {addRequest,hideModal, initTickers} from './../../actions/rootActions';
 import Axios from 'axios';
 class CustomModal extends Component{
   
@@ -21,6 +21,7 @@ class CustomModal extends Component{
    
     }
     addToStocksHandler(){
+      //object to added to redux store as well as firestore
       let obj={
         symbol:this.props.modalDetails.symbol,
         name:this.props.modalDetails.name,
@@ -30,20 +31,80 @@ class CustomModal extends Component{
         
       }
 
-    
+    //add to firestore
     this.props.addRequest({
       stock:obj
     })
    
+    //post to firestore
     axios.post("https://test-64e17.firebaseio.com/myStocks.json",obj)
        .then(response=>{
           //  console.log(response);
-       })   
+       })  
+       
+      //delete stock from stockselector
+      let key=this.props.modalDetails.key;
+      console.log(key)
+      axios.delete("https://test-64e17.firebaseio.com/allStocks/"+key+".json")
+          .then(
+              Response=>{
+                  console.log(Response);
+                  let myarr=[];
+                  let value;
+                  axios.get("https://test-64e17.firebaseio.com/allStocks.json")
+                  .then((response)=>{
+              //         console.log(response.data)
+              //         let keys=Object.keys(response.data);
+              //         // console.log(keys) ;
+              //     //     this.setState(
+              //     //         {
+              //     //             tickers:[...response.data]
+              //     //         }
+              //     //         )
+              
+          
+          
+              //     // })
+          
+              //     keys.forEach((key, index) => {
+              //        let value=response.data[key];
+              //         // value['key']=key;
+                     
+              //         // myarr.push(value)
+              //    console.log(value)
+              //     });
+              
+              if(response.data){
+                  const keys = Object.keys(response.data);
+                  console.log(keys);
+                  // iterate over object
+                  keys.forEach((key, index) => {
+                      value=response.data[key];
+                      if(value!=null){
+                          value['key']=key;
+                     
+                          myarr.push(value)
+                      }
+                      // console.log(value);
+                   
+                 
+                  });
+              }
+                  // console.log(myarr);
+                  this.props.initTickers(
+                      {
+                          tickers:[...myarr]
+                      }
+                  )
+              } )
+              }
+          ) 
      
        this.props.hideModal();
     // console .log("addmodal")
     // let arr=this.props.addModal;
     // console.log(arr);
+    //  axios.delete("https://test-64e17.firebaseio.com/allStocks/"+key+".json")
    
     }
     render(){
@@ -113,14 +174,16 @@ class CustomModal extends Component{
 const mapDispatchToProps = dispatch => ({
   hideModal: (obj) => dispatch(hideModal(obj)),
   addRequest: (obj) => dispatch(addRequest(obj)),
+  initTickers: (obj) => dispatch(initTickers(obj)),
 
   
 })
 
-
+ 
 const mapStateToProps = state => ({
   modalState:state.modalState,
-  addModal:state.addModal
+  addModal:state.addModal,
+
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(CustomModal)

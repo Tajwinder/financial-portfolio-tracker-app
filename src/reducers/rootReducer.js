@@ -3,9 +3,11 @@ let initialState = {
     modalState:false,
     modalDetails:{
         symbol:'A',
-        name:null
+        name:null,
+        key:null
     },
-    addModal:[]
+    addModal:[],
+    tickers:[]
     
 
 }
@@ -35,13 +37,22 @@ const rootReducer = (state = {...initialState}, action) => {
                
             }
             break;
+        case "ADD_TICKERS":
+                state = {
+                    ...state,
+                   tickers:[...state.tickers, action.payload.tickers]
+                      
+                   
+                }
+                break;
         case "UPDATE_SYMNAME":
             state = {
                 ...state,
                 modalDetails:{
                     ...state.modalDetails,
                     symbol:action.payload.symbol,
-                    name:action.payload.name
+                    name:action.payload.name,
+                    key:action.payload.key
                 }
 
             }
@@ -54,6 +65,14 @@ const rootReducer = (state = {...initialState}, action) => {
                    
                 }
                 break;
+        case "INIT_TICKERS":
+                    state = {
+                        ...state,
+                       tickers:[...action.payload.tickers]
+                          
+                       
+                    }
+                    break;
         case "OTHER_ACTION":
             break;
 

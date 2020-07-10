@@ -2,53 +2,9 @@ import React, {Component} from 'react';
 import axios from 'axios';
 
 import {connect} from 'react-redux';
-import {initStock} from './../../actions/rootActions';
-let result;
-let myStocks={
-    "allStocks":[
-        {
-            "symbol":"AMZN",
-            "name":"Amazone.com Inc",
-            "No":23,
-            "BuyPrice":144,
-            "CurrentPrice":3434,
-            "Profit/Loss":5454,
-            "Action":"Action"
-        },
-        {
-            "symbol":"GS",
-            "name":"Goldman Sachs Group Inc",
-            "No":23,
-            "BuyPrice":144,
-            "CurrentPrice":3434,
-            "Profit/Loss":5454,
-            "Action":"Action"
-        },
-        {
-            "symbol":"HD",
-            "name":"Home Depot Inc",
-            "No":23,
-            "BuyPrice":144,
-            "CurrentPrice":3434,
-            "Profit/Loss":5454,
-            "Action":"Action"
-        },
-        {
-            "symbol":"INTC",
-            "name":" Intel Corporation",
-            "No":23,
-            "BuyPrice":144,
-            "CurrentPrice":3434,
-            "Profit/Loss":5454,
-            "Action":"Action"
-        }
-       
-       
-    
-    ]
-        
-   
-}
+import {initStock,addTickers} from './../../actions/rootActions';
+
+
 class MyStocks extends Component {
     constructor(props) {
         super(props);
@@ -56,14 +12,17 @@ class MyStocks extends Component {
             myStocks:[]
          }
     }
-    deleteHandler(key){
-    
-        axios.delete("https://test-64e17.firebaseio.com/myStocks/"+key+".json")
+    deleteHandler(obj){
+    //delete stock from firestore
+    let objKey=obj.key;
+        axios.delete("https://test-64e17.firebaseio.com/myStocks/"+objKey+".json")
         .then(
             response=>{
                 console.log(response);
                 let myarr=[];
-        let value;
+                let value;
+        
+        //update redux store
         axios.get("https://test-64e17.firebaseio.com/myStocks.json")
         .then(response=>{
            
@@ -71,10 +30,17 @@ class MyStocks extends Component {
             if(response.data){
                 const keys = Object.keys(response.data);
                 keys.forEach((key, index) => {
-                    value=response.data[key];
-                    value['key']=key;
-                   
-                    myarr.push(value)
+                    if(key!=objKey){
+                        response.data[key].symbol;
+                        alert(" updated");
+                        value=response.data[key];
+                        value['key']=key;
+                       
+                        myarr.push(value)
+                    }
+                 else{
+                     alert("not updated");
+                 }
                
                 });
             }
@@ -97,6 +63,46 @@ class MyStocks extends Component {
            
             
         })   
+
+        //add to tickers
+let ticker={
+    symbol:obj.symbol,
+    name:obj.name,
+    
+}
+axios.post("https://test-64e17.firebaseio.com/allStocks.json",ticker)
+.then(response=>{
+    console.log(response);
+
+    let value;
+    axios.get("https://test-64e17.firebaseio.com/allStocks.json")
+    .then((response)=>{
+
+
+
+if(response.data){
+    const keys = Object.keys(response.data);
+    // console.log(keys);
+    // iterate over object
+    let keyIndex=keys.length-1;
+    let key=keys[keyIndex];
+    value=response.data[key];
+    if(value!=null){
+        value['key']=key;
+   
+       
+    }
+    this.props.addTickers(
+        {
+            tickers:value
+        }
+    )
+}
+    // console.log(myarr);
+   
+} )
+
+})    
     
             }
         )
@@ -134,7 +140,7 @@ class MyStocks extends Component {
                    <td className="">{obj.buyPrice} </td> 
                    <td className="">{obj.currentPrice} </td> 
                    <td className="">{obj.currentPrice-obj.buyPrice} </td> 
-                   <td className="" onClick={()=>this.deleteHandler(obj.key)}>ACTION </td> 
+                   <td className="" onClick={()=>this.deleteHandler(obj)}>ACTION </td> 
                    {/* obj.currentPrice-obj.buyPrice */}
                 </tr>
             )
@@ -178,6 +184,7 @@ class MyStocks extends Component {
 const mapDispatchToProps = dispatch => ({
 
     initStock: (obj) => dispatch(initStock(obj)),
+    addTickers:(obj) => dispatch(addTickers(obj)),
     
   })
   
