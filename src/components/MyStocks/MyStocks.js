@@ -2,23 +2,38 @@ import React, {Component} from 'react';
 import axios from 'axios';
 
 import {connect} from 'react-redux';
-import {initStock,addTickers} from './../../actions/rootActions';
+import {initStock,addTickers, decrementStocksCount} from './../../actions/rootActions';
 
 
 class MyStocks extends Component {
     constructor(props) {
         super(props);
         this.state = { 
-            myStocks:[]
+            myStocks:[],
+            message:null
          }
+    }
+
+    weekend_message(){
+        let d = new Date();
+        let n = d.getDay();
+        if(n==4){
+        let dateString=`${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`
+        
+        this.setState({
+            message:`The Current price and Profit/Loss fields are showing data for ${dateString} and will be refreshed on Monday only`
+        })
+       
+    }
     }
     deleteHandler(obj){
     //delete stock from firestore
     let objKey=obj.key;
+    console.log(objKey)
         axios.delete("https://test-64e17.firebaseio.com/myStocks/"+objKey+".json")
         .then(
             response=>{
-                console.log(response);
+                // console.log(response);
                 let myarr=[];
                 let value;
         
@@ -32,7 +47,7 @@ class MyStocks extends Component {
                 keys.forEach((key, index) => {
                     if(key!=objKey){
                         response.data[key].symbol;
-                        alert(" updated");
+                        // alert(" updated");
                         value=response.data[key];
                         value['key']=key;
                        
@@ -46,10 +61,10 @@ class MyStocks extends Component {
             }
            
             if(myarr.length>0){
-                console.log(myarr);
+                // console.log(myarr);
             }
             else{
-                console.log("no stock"); 
+                // console.log("no stock"); 
             }
             // console.log(myarr);
            
@@ -60,9 +75,30 @@ class MyStocks extends Component {
                     }
                 )
             }
-           
+         
             
         })   
+
+        let count={
+            stocksCount:this.props.stocksCount-1
+          }
+          axios.delete("https://test-64e17.firebaseio.com/stocksCount.json")
+          .then(()=>{
+           axios.post("https://test-64e17.firebaseio.com/stocksCount.json",count)  
+           .then(()=>{
+            //  console.log("count_updated");
+            //  axios.get("https://test-64e17.firebaseio.com/stocksCount.json")
+            //  .then(response=>{
+            //    console.log("stockCountData when deleted")
+            //    console.log(response.data);
+            //  })
+    
+           }) 
+        //    console.log("deleted")
+          })
+         
+        console.log("decrement_stocks") 
+        this.props.decrementStocksCount();  
 
         //add to tickers
 let ticker={
@@ -72,7 +108,7 @@ let ticker={
 }
 axios.post("https://test-64e17.firebaseio.com/allStocks.json",ticker)
 .then(response=>{
-    console.log(response);
+    // console.log(response);
 
     let value;
     axios.get("https://test-64e17.firebaseio.com/allStocks.json")
@@ -111,11 +147,14 @@ if(response.data){
     
     render() { 
         console.log("render");
+        console.log("stock-count")  
+        console.log(this.props.stocksCount);
         
         return ( 
             !this.props.addModal.length?<div>no stocks have been selected</div>
             : <div className="myStocks">
               <h2>My Stocks</h2>
+              <div>{this.state.message}</div>
               {/* <button onClick={()=>this.clickHandler()}>click </button> */}
         {/* <div>{this.props.addModal[1].name}</div> */}
               <table>
@@ -139,8 +178,8 @@ if(response.data){
                    <td className="">{obj.noOfShares} </td> 
                    <td className="">{obj.buyPrice} </td> 
                    <td className="">{obj.currentPrice} </td> 
-                   <td className="">{obj.currentPrice-obj.buyPrice} </td> 
-                   <td className="" onClick={()=>this.deleteHandler(obj)}>ACTION </td> 
+                   <td className="">{(obj.currentPrice-obj.buyPrice)*obj.noOfShares} </td> 
+                   <td className=""><button onClick={()=>this.deleteHandler(obj)}>Stop Tracking</button>  </td> 
                    {/* obj.currentPrice-obj.buyPrice */}
                 </tr>
             )
@@ -156,6 +195,9 @@ if(response.data){
         let value;
         axios.get("https://test-64e17.firebaseio.com/myStocks.json")
         .then(response=>{
+           this.weekend_message(); 
+        
+        // console.log(Response);
             if(response.data){
             const keys = Object.keys(response.data);
             // iterate over object
@@ -174,7 +216,9 @@ if(response.data){
                 }
             )
             
-        })   
+        }) 
+        console.log("stock-count")  
+        // console.log(this.props.stocksCount);
       
     }
 
@@ -185,13 +229,15 @@ const mapDispatchToProps = dispatch => ({
 
     initStock: (obj) => dispatch(initStock(obj)),
     addTickers:(obj) => dispatch(addTickers(obj)),
-    
+    decrementStocksCount:(obj) => dispatch(decrementStocksCount(obj)),
   })
   
   
   const mapStateToProps = state => ({
     // modalState:state.modalState,
-    addModal:state.addModal
+    addModal:state.addModal,
+    stocksCount:state.stocksCount
+    
   })
   
   export default connect(mapStateToProps, mapDispatchToProps)(MyStocks)
