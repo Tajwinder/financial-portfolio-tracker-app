@@ -93,7 +93,7 @@ class MyStocks extends Component {
        
           })
          
-        console.log("decrement_stocks") 
+        // console.log("decrement_stocks") 
         this.props.decrementStocksCount();  
 
         //add to tickers
@@ -169,8 +169,8 @@ if(response.data){
                   <tbody>
                   {
         this.props.addModal.map(
-            (obj)=>(
-                <tr>
+            (obj,index)=>(
+                <tr key={index}>
                    
                    <td className="">{obj.symbol} </td> 
                    <td className="">{obj.name} </td> 
@@ -217,8 +217,7 @@ if(response.data){
             )
             
         }) 
-        console.log("stock-count")  
-        // console.log(this.props.stocksCount);
+        
       
     }
 

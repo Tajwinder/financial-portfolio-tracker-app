@@ -26,11 +26,9 @@ class CustomModal extends Component{
     }
     fieldValidation(){
       let add;
-      // console.log("test fun");
-      // // console.log(this.state.noOfShares+' '+this.state.buyPrice+' '+this.state.buyPrice)
+      
       if(this.state.noOfShares==null||this.state.buyPrice==null||this.state.buyDate==null){
-        // console.log("empty");
-        // console.log(this.state.noOfShares+' '+this.state.buyPrice+' '+this.state.buyDate)
+       
         this.setState(
           {
             submit:false,
@@ -41,8 +39,7 @@ class CustomModal extends Component{
       }
       
        else{
-        //  console.log("not empty")
-        // console.log(this.state.noOfShares)
+       
         this.setState({
           message:null,
           submit:true
@@ -98,7 +95,7 @@ class CustomModal extends Component{
       axios.delete("https://test-64e17.firebaseio.com/allStocks/"+key+".json")
           .then(
               Response=>{
-                  console.log(Response);
+                
                   let myarr=[];
                   let value;
 

@@ -43,8 +43,8 @@ class StockSelector  extends Component {
     <ul className="AddStocksList">
     {
         this.props.tickers.map(
-            (obj)=>(
-                <li className="tickers">
+            (obj,index)=>(
+                <li key={index} className="tickers">
                    <button className="StockButton" onClick={()=>this.showModalHandler(obj)}>{obj.symbol} </button> 
                    <div className="tickerName">{obj.name} </div> 
                    
