@@ -1,0 +1,46 @@
+.MyStocks{
+    width: 900px;
+    margin: 0px auto;
+}
+th{
+    background-color: rgb(38, 38, 252);
+    color: white;
+    /* padding: 60px; */
+    height: 33px;
+}
+
+tr:nth-child(even){
+    background-color: rgb(241, 239, 239);
+}
+/* table{
+    border: 1px solid grey;
+} */
+td,th{
+    border: 1px solid grey;
+    border-collapse: collapse;
+}
+th,td{
+    /* padding-right: 20px; */
+    padding: 5PX 20PX 5PX 10PX;
+}
+table{
+    border-collapse: collapse;
+}
+td .StopTrackingBtn{
+    background-color: red;
+    cursor: pointer;
+    border-radius: 5px;
+    width: 100px;
+    height: 35px;
+    
+}
+.weekend_message{
+    color: red;
+    font-size: 1.1em;
+    margin-bottom: 20px;
+}
+.noStock{
+    width: fit-content;
+    margin: 0px auto;
+    font-size: 1.2rem;
+}

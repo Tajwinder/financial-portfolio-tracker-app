@@ -25,6 +25,7 @@ class CustomModal extends Component{
    
     }
     fieldValidation(){
+      let add;
       // console.log("test fun");
       // // console.log(this.state.noOfShares+' '+this.state.buyPrice+' '+this.state.buyPrice)
       if(this.state.noOfShares==null||this.state.buyPrice==null||this.state.buyDate==null){
@@ -36,6 +37,7 @@ class CustomModal extends Component{
             message:'All the fields must be filled'
           }
         )
+        add=false;
       }
       
        else{
@@ -45,11 +47,13 @@ class CustomModal extends Component{
           message:null,
           submit:true
         })
+        add=true
       }
+      return add;
     }
     addToStocksHandler(){
-      this.fieldValidation();
-      if(!this.state.submit){
+      // this.fieldValidation();
+      if(!this.fieldValidation()){
         // console.log("submit false")
         return;
       }
@@ -68,10 +72,7 @@ class CustomModal extends Component{
         
       }
 
-    //add to firestore
-    // this.props.addRequest({
-    //   stock:obj
-    // })
+   
    
     //post to firestore
     axios.post("https://test-64e17.firebaseio.com/myStocks.json",obj)
@@ -93,7 +94,7 @@ class CustomModal extends Component{
        
       //delete stock from stockselector
       let key=this.props.modalDetails.key;
-      console.log(key)
+      // console.log(key)
       axios.delete("https://test-64e17.firebaseio.com/allStocks/"+key+".json")
           .then(
               Response=>{
@@ -105,30 +106,9 @@ class CustomModal extends Component{
       
                   axios.get("https://test-64e17.firebaseio.com/allStocks.json")
                   .then((response)=>{
-              //         console.log(response.data)
-              //         let keys=Object.keys(response.data);
-              //         // console.log(keys) ;
-              //     //     this.setState(
-              //     //         {
-              //     //             tickers:[...response.data]
-              //     //         }
-              //     //         )
-              
-          
-          
-              //     // })
-          
-              //     keys.forEach((key, index) => {
-              //        let value=response.data[key];
-              //         // value['key']=key;
-                     
-              //         // myarr.push(value)
-              //    console.log(value)
-              //     });
-              
-              if(response.data){
+                  if(response.data){
                   const keys = Object.keys(response.data);
-                  console.log(keys);
+                  // console.log(keys);
                   // iterate over object
                   keys.forEach((key, index) => {
                       value=response.data[key];
@@ -158,23 +138,15 @@ class CustomModal extends Component{
        .then(()=>{
         axios.post("https://test-64e17.firebaseio.com/stocksCount.json",count)  
         .then(()=>{
-          // console.log("count_updated");
-          // axios.get("https://test-64e17.firebaseio.com/stocksCount.json")
-          // .then(response=>{
-          //   console.log("stockCountData when added")
-          //   console.log(response.data);
-          // })
+         
  
         }) 
-        // console.log("deleted")
+       
        })
       
        this.props.incrementStocksCount();
        this.props.hideModal();
-    // console .log("addmodal")
-    // let arr=this.props.addModal;
-    // console.log(arr);
-    //  axios.delete("https://test-64e17.firebaseio.com/allStocks/"+key+".json")
+    
    
     }
     render(){
@@ -183,20 +155,20 @@ class CustomModal extends Component{
       }
       return(
      
-        <div className="AddStockModal">
+        <div className="AddStockForm">
           
           <div className="ModalContent">
           
              <h2>Add {this.props.modalDetails.name} to My Stocks</h2>
              <div className="content">
+             <div>Price: {this.state.currentPrice}</div>  
                <div className="modalAttributes">
                  <label>Company Name:</label>
                  <label>{this.props.modalDetails.name}</label>
                </div>
-               <div>{this.state.currentPrice}</div>
                <div className="modalAttributes">
                  <label>No. of Shares:</label>
-                 <input placeholder="No. of Shares" className="inputBox" required
+                 <input placeholder="No. of Shares" id='noShares' className="inputBox" required
                   onChange={(e)=>this.setState({
                     noOfShares:e.target.value
                   })}>
@@ -205,21 +177,21 @@ class CustomModal extends Component{
                </div>
                <div className="modalAttributes">
                  <label>Buy price:</label>
-                 <input placeholder="Buying price" className="inputBox" onChange={(e)=>this.setState({buyPrice:e.target.value})}></input>
+                 <input placeholder="Buying price" id='buyPrice' className="inputBox" onChange={(e)=>this.setState({buyPrice:e.target.value})}></input>
                </div>
                <div className="modalAttributes">
                  <label>Buy date:</label>
-                 <input type="date" className="inputBox" onChange={(e)=>this.setState({buyDate:e.target.value})}></input>
+                 <input type="date"id='buyDate' className="inputBox" onChange={(e)=>this.setState({buyDate:e.target.value})}></input>
                </div>
                
-               
-               
-               
-               <div>{this.state.message}</div>
-               <button  onClick={()=>this.hideModalHandler()}>cancel</button>
-               <button  onClick={()=>this.addToStocksHandler(this.props.modalDetails)}>Add</button>
+               <div>{this.state.message}</div> 
               
-             </div>
+              
+             </div >
+             <div className='btn'>
+               <button id='cancelBtn' onClick={()=>this.hideModalHandler()}>X</button>
+               <button  className='AddButton' onClick={()=>this.addToStocksHandler(this.props.modalDetails)}>Add</button>
+             </div>  
           </div>
  
         </div>
@@ -232,10 +204,7 @@ class CustomModal extends Component{
     
     .then(Response=>
       {
-        // let d = new Date();
-        // let n = d.getDay()
-        // console.log(n);
-        // console.log(Response);
+        
        this.setState({
          api:true
        })
@@ -276,4 +245,3 @@ const mapStateToProps = state => ({
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(CustomModal)
-// export default CustomModal;

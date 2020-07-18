@@ -8,19 +8,15 @@ class ModalContainer extends Component {
         this.state = {  }
     }
 
-    fun(){
-        console.log("fun");
-    }
+    // fun(){
+    //     console.log("fun");
+    // }
 
-    showModalHandler(){
-        this.props.showModal();
-
-        // console.log("show");
-    }
+   
     render() { 
         return ( 
             this.props.modalState?
-            <CustomModal hideModal={this.props.hideModal} modalDetails={this.props.modalDetails} />: <button onClick={()=>this.showModalHandler()}>show</button>
+            <CustomModal hideModal={this.props.hideModal} modalDetails={this.props.modalDetails} />: null
          );
     }
 }

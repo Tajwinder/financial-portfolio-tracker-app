@@ -1,23 +1,26 @@
-.AddStockModal{
+.AddStockForm{
     position: absolute;
     top: 0px;
     left: 0px;
     width: 100vw;
     height: 100vh;
-    background-color: black;
-    /* opacity: 0.7; */
+    background-color: rgba(0, 0, 0, 0.7);
+    overflow:  hidden;
+    
 }
 .ModalContent{
     width: 60%;
     height: 70%;
     margin: 100px auto;
     background-color: white;
+    position: relative;
+   
 }
 .modalAttributes{
     display: flex;
     /* align-content: center; */
     justify-content: space-between;
-
+    margin: 5px auto;
 }
 .ModalContent{
     padding: 10px 50px;
@@ -28,4 +31,30 @@
 }
 .inputBox{
     width: 150px;
+}
+
+#cancelBtn{
+    margin-right: 10px;
+    /* width: 70px; */
+    /* height: 25px; */
+    padding: 2px 7px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    top: -45px;
+    right: -200px;
+    color: red;
+    font-size: 1.3rem;
+
+}
+.AddButton{
+    width: 70px;
+    height: 25px;
+    border-radius: 5px;
+    cursor: pointer;
+    position: absolute;
+    bottom: 0px;
+    left: 47%;
+
 }

@@ -9,12 +9,7 @@ export default function App(){
        
               <div> 
             <Header/>
-            {/* <ReduxComp/> */}
             <Body/>
-            {/* <TimeComponent/> */}
-            {/* <SearchBar/>
-            <Results/> */}
-            {/* <Table/> */}
             <ModalContainer/>
              </div>
        

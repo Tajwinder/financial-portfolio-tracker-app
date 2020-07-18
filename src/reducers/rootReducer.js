@@ -7,7 +7,8 @@ let initialState = {
         key:null
     },
     addModal:[],
-    tickers:[]
+    tickers:[],
+    stocksCount:0
     
 
 }
@@ -71,6 +72,32 @@ const rootReducer = (state = {...initialState}, action) => {
                        tickers:[...action.payload.tickers]
                           
                        
+                    }
+                    break;
+        case "INCREMENT_STOCKS_COUNT":
+                    state = {
+                        ...state,
+                        stocksCount:state.stocksCount+1
+                      
+                          
+                       
+                    }
+                    break;
+        case "DECREMENT_STOCKS_COUNT":
+                    state = {
+                        ...state,
+                        stocksCount:state.stocksCount-1
+                      
+                          
+                       
+                    }
+                    break;
+        case "INIT_STOCKS_COUNT":
+                    state = {
+                        ...state,
+                      stocksCount:action.payload.count
+                            
+                        
                     }
                     break;
         case "OTHER_ACTION":

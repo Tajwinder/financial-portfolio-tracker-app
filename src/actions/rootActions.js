@@ -44,3 +44,24 @@ export function initTickers(payload) {
         payload: payload
     };
 }
+
+export function incrementStocksCount(payload) {
+    return {
+        type: "INCREMENT_STOCKS_COUNT",
+        payload: payload
+    };
+}
+
+export function decrementStocksCount(payload) {
+    return {
+        type: "DECREMENT_STOCKS_COUNT",
+        payload: payload
+    };
+}
+
+export function initStocksCount(payload) {
+    return {
+        type: "INIT_STOCKS_COUNT",
+        payload: payload
+    };
+}

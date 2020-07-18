@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import axios from 'axios';
+import './MyStocks.css'
 
 import {connect} from 'react-redux';
 import {initStock,addTickers, decrementStocksCount} from './../../actions/rootActions';
@@ -17,7 +18,7 @@ class MyStocks extends Component {
     weekend_message(){
         let d = new Date();
         let n = d.getDay();
-        if(n==4){
+        if(n==6 ||n==7){
         let dateString=`${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`
         
         this.setState({
@@ -29,7 +30,7 @@ class MyStocks extends Component {
     deleteHandler(obj){
     //delete stock from firestore
     let objKey=obj.key;
-    console.log(objKey)
+    // console.log(objKey)
         axios.delete("https://test-64e17.firebaseio.com/myStocks/"+objKey+".json")
         .then(
             response=>{
@@ -86,15 +87,10 @@ class MyStocks extends Component {
           .then(()=>{
            axios.post("https://test-64e17.firebaseio.com/stocksCount.json",count)  
            .then(()=>{
-            //  console.log("count_updated");
-            //  axios.get("https://test-64e17.firebaseio.com/stocksCount.json")
-            //  .then(response=>{
-            //    console.log("stockCountData when deleted")
-            //    console.log(response.data);
-            //  })
+          
     
            }) 
-        //    console.log("deleted")
+       
           })
          
         console.log("decrement_stocks") 
@@ -146,28 +142,31 @@ if(response.data){
         }
     
     render() { 
-        console.log("render");
-        console.log("stock-count")  
-        console.log(this.props.stocksCount);
+        // console.log("render");
+        // console.log("stock-count")  
+        // console.log(this.props.stocksCount);
         
         return ( 
-            !this.props.addModal.length?<div>no stocks have been selected</div>
-            : <div className="myStocks">
+            !this.props.addModal.length?<div className='noStock'>no stocks have been selected</div>
+            : <div className="MyStocks">
               <h2>My Stocks</h2>
-              <div>{this.state.message}</div>
+              <div className='weekend_message'>{this.state.message}</div>
               {/* <button onClick={()=>this.clickHandler()}>click </button> */}
         {/* <div>{this.props.addModal[1].name}</div> */}
-              <table>
-                  <tr>
+              <table className='MyStocksTable'> 
+                  <thead>
+                  <tr className="tableHeader">
                       <th>Stock symbol</th>
                       <th>Stock name</th>
                       <th>No.of shares</th>
                       <th>Buy price</th>
                       <th>Current price</th>
                       <th>Profit/Loss</th>
-                      <th>Action</th>
+                      <th></th>
                   </tr>
-
+                  </thead>
+                
+                  <tbody>
                   {
         this.props.addModal.map(
             (obj)=>(
@@ -178,13 +177,14 @@ if(response.data){
                    <td className="">{obj.noOfShares} </td> 
                    <td className="">{obj.buyPrice} </td> 
                    <td className="">{obj.currentPrice} </td> 
-                   <td className="">{(obj.currentPrice-obj.buyPrice)*obj.noOfShares} </td> 
-                   <td className=""><button onClick={()=>this.deleteHandler(obj)}>Stop Tracking</button>  </td> 
+                   <td className="">{Math.round((obj.currentPrice-obj.buyPrice)*obj.noOfShares)} </td> 
+                   <td className=""><button className="StopTrackingBtn" onClick={()=>this.deleteHandler(obj)}>Stop Tracking</button>  </td> 
                    {/* obj.currentPrice-obj.buyPrice */}
                 </tr>
             )
         )
     }            
+              </tbody>
               </table>
             </div>
          );
@@ -241,9 +241,3 @@ const mapDispatchToProps = dispatch => ({
   })
   
   export default connect(mapStateToProps, mapDispatchToProps)(MyStocks)
-// export default MyStocks;
-
-// const keys = Object.keys(fruits)
-// for (const key of keys) {
-//   console.log(key)
-// }

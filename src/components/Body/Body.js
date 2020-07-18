@@ -1,14 +1,15 @@
 import React from 'react';
 import './Body.css'
 
-import StockSelector from './../StockSelector/StockSelector';
-import MyStocks from './../MyStocks/MyStocks';
+
+import Container from '../Container/Container';
+
 export default function Body(){
     return (
         <div className="Body"> 
            
-            <MyStocks/>
-            <StockSelector/>
+           <Container/>
+           
            
              </div>
         

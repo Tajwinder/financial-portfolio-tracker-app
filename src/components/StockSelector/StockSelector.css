@@ -1,3 +1,7 @@
+.AddStocksTitle{
+    width: 900px;
+    margin:0px auto;
+}
 .AddStocksList{
     display: grid;
     grid-template-columns: auto auto;
@@ -7,16 +11,25 @@
     align-items: center;
 }
 .StockButton{
+    height: 30px;
     border: 1px solid rgb(180, 176, 176);
     border-radius: 5px;
-    /* box-shadow: 2px black; */
     width: 100px;
     background-color: white;
     padding: 5px;
     margin: 5px ;
+    box-shadow: 3px 3px 5px rgb(168, 167, 167);
 }
 .StockButton:hover{
     background-color: black;
     color: white;
     cursor: pointer;
+    box-shadow: none;
+}
+ul{
+    
+    padding: 0;
+}
+.maxCount{
+    font-size: 1.2rem;
 }
