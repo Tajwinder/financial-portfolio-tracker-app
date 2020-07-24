@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import './MyStocks.css'
-
 import {connect} from 'react-redux';
 import {initStock,addTickers, decrementStocksCount} from './../../actions/rootActions';
 
