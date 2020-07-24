@@ -7,6 +7,10 @@ module.exports = {
         path: path.resolve(__dirname, 'public'),
         filename: 'index_bundle.js'
     },
+devServer: {
+        inline: true,
+        port:3000
+      },
     module : {
         rules : [
             {test : /\.(js)$/, use:'babel-loader'},
